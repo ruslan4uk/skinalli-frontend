@@ -1,19 +1,29 @@
 <template>
-  <div>
-    <navbar />
-    <nuxt />
-    <Footer/>
-  </div>
+    <v-app>
+        <VTNavbar/>
+        
+        <v-content>
+
+            <VTLeftNavigation v-if="authenticated"/>
+
+            <nuxt/>
+
+        </v-content>
+
+        <VTFooter/>
+    </v-app>
 </template>
 
 <script>
-import Navbar from '@/layouts/partials/Navbar'
-import Footer from '@/layouts/partials/Footer'
+import VTLeftNavigation from '@/layouts/partials/VTLeftNavigation'
+import VTNavbar from '@/layouts/partials/VTNavbar'
+import VTFooter from '@/layouts/partials/VTFooter'
 export default {
-  components: {
-    Navbar,
-    Footer
-  }
+    components: {
+        VTNavbar,
+        VTFooter,
+        VTLeftNavigation,
+    },
 }
 </script>
 

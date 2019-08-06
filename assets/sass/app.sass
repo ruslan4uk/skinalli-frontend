@@ -1,41 +1,73 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900&display=swap&subset=cyrillic')
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons')
+@import '~vuetify/src/styles/styles.sass'
+ 
+// The variables you want to modify 
+$font-size-root: 14px
+// For updating SASS lists 
+// $material-light: map-merge($material-light, ( cards: blue ))
+$btn-border-radius: 0px
 
 html, body 
     font-family: 'Source Sans Pro', sans-serif
     background-color: #fefefe
 
-*
-    outline: none
+// *
+//     outline: none
 
-.border10
-    border-radius: 10px 
-.border15
-    border-radius: 15px 
-.border20
-    border-radius: 20px 
+// .border10
+//     border-radius: 10px 
+// .border15
+//     border-radius: 15px 
+// .border20
+//     border-radius: 20px 
 
-img 
-    max-width: 100%
+// img 
+//     max-width: 100%
 
-h3,h4,h5 
-    font-weight: 800
+// h3,h4,h5 
+//     font-weight: 800
 
-.btn
-    border-radius: 0
-    &:active 
-        background-color: transparent
+// .btn
+//     border-radius: 0
+//     &:active 
+//         background-color: transparent
 
-.breadcrumb
-    padding: 0
-    background: transparent
-    font-size: 0.875rem
-    & *
-        color: #777777
+// .breadcrumb
+//     padding: 0
+//     background: transparent
+//     font-size: 0.875rem
+//     & *
+//         color: #777777
 
-.button-outline
-    border: 1px solid #aaaaaa
-    transition: all ease 0.2s
-    &:hover
-        background-color: rgb(220, 53, 69)
-        border: 1px solid rgb(220, 53, 69)
-        color: #ffffff
+// .button-outline
+//     border: 1px solid #aaaaaa
+//     transition: all ease 0.2s
+//     &:hover
+//         background-color: rgb(220, 53, 69)
+//         border: 1px solid rgb(220, 53, 69)
+//         color: #ffffff
+
+
+.page-enter-active,
+.page-leave-active 
+    transition-duration: 0.3s
+    transition-property: opacity
+    transition-timing-function: ease
+
+
+.page-enter,
+.page-leave-active 
+    opacity: 0
+
+
+.fade-enter-active,
+.fade-leave-active 
+    transition-duration: 0.3s
+    transition-property: opacity
+    transition-timing-function: ease
+
+
+.fade-enter,
+.fade-leave-active 
+    opacity: 0

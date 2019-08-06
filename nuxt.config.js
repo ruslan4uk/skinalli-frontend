@@ -1,7 +1,11 @@
 import pkg from './package'
 
+require('dotenv').config()
+
 export default {
   mode: 'universal',
+
+  debug: false,
 
   /*
   ** Headers of the page
@@ -37,16 +41,19 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '@/plugins/mixins/validation',
+    '@/plugins/mixins/user',
+    '@/plugins/axios',
   ],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/dotenv',
     '@nuxtjs/axios',
-    // Doc: https://bootstrap-vue.js.org/docs/
-    'bootstrap-vue/nuxt',
+    // 'bootstrap-vue/nuxt',
+    '@nuxtjs/auth',
     '@nuxtjs/pwa',
     ['nuxt-fontawesome', {
       component: 'fa',
@@ -63,11 +70,55 @@ export default {
       ]
     }],
   ],
+
+  devModules: [
+    // Simple usage
+    '@nuxtjs/vuetify'
+  ],
+
+  vuetify: {
+    treeShake: true,
+  },
+
+  /**
+   * Auth
+   */
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', propertyName: 'access_token' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/auth/user', method: 'get', propertyName: 'user' }
+        },
+        // tokenRequired: true,
+        tokenType: 'Bearer'
+      }
+    },
+    redirect: {
+      login: '/auth/login',
+      logout: '/auth/login',
+      home: '/'
+    },
+    watchLoggedIn: true,
+  },
+
+   /**
+   * Router middleware config
+   */
+  router: {
+    linkActiveClass: 'active',
+    middleware: [
+        'clearValidationErrors'
+    ]
+  },
+
   /*
   ** Axios module configuration
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    baseURL: process.env.BASE_URL || 'https://site.ru/api/v1',
   },
 
   /*

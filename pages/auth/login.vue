@@ -1,30 +1,57 @@
 <template>
-    <section class="auth">
-        <b-container>
-            <b-row class="justify-content-center mb-4">
-                <b-col cols="12" md="8" lg="5">
-                    <h4 class="mb-4">Auth</h4>
-                    <b-form>
-                        <b-form-group>
-                            <b-input placeholder="Login"></b-input>
-                        </b-form-group>
-                        <b-form-group>
-                            <b-input placeholder="Password"></b-input>
-                        </b-form-group>
-                        <b-form-group>
-                            <b-button block class="btn btn-ouline button-outline">Login</b-button>
-                        </b-form-group>
-                    </b-form>
-                </b-col>
-            </b-row>
-        </b-container>
+    <section class="auth mt-10">
+        <v-container justify-center>
+            <v-layout justify-center>
+                <v-flex sm6 lg4>
+                    <v-card class="pa-5 pa-sm-7" >
+                        <h2>Авторизация</h2>
+                        <v-form ref="form" @submit.prevent="login()">
+                            <v-text-field
+                                :counter="25"
+                                label="Login (Email)"
+                                required
+                                v-model="form.email"
+                                :error-messages="errors.email"
+                            ></v-text-field>
+
+                            <v-text-field
+                                type="password"
+                                :counter="25"
+                                label="Password"
+                                required
+                                v-model="form.password"
+                                :error-messages="errors.password"
+                            ></v-text-field>
+
+                            <v-btn block color="primary" class="mt-5" type="submit">Войти</v-btn>
+                        </v-form>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
     </section>
 </template>
 
 <script>
-    export default {
-        
-    }
+export default {
+    data() {
+        return {
+            form: {
+                email: '',
+                password: '',
+                remember_me: true,
+            },
+        }
+    },
+    methods: {
+         login() {                            
+             this.$auth.login({ data: this.form }).then(res => {
+				this.$router.push({ name: 'admin' })
+			});
+        }   
+    },
+
+}
 </script>
 
 <style scoped>
