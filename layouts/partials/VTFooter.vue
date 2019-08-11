@@ -1,6 +1,6 @@
 <template>
     <v-footer dark padless >
-        <v-card flat tile class="primary white--text text-center" >
+        <v-card flat tile class="primary darken-2 white--text text-center" >
             <v-card-text>
                 <v-btn class="mx-4 white--text" icon >
                     <!-- <v-icon size="24px">{{ icon }}</v-icon> -->

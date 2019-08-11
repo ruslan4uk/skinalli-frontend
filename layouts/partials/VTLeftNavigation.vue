@@ -13,11 +13,17 @@
                 </v-list-item-icon>
                 <v-list-item-title>Категории</v-list-item-title>
             </v-list-item>
-            <v-list-item link :to="{ name: 'admin-image' }">
+            <v-list-item link :to="{ name: 'admin-photos' }">
                 <v-list-item-icon>
                     <v-icon>burst_mode</v-icon>
                 </v-list-item-icon>
                 <v-list-item-title>Картинки</v-list-item-title>
+            </v-list-item>
+            <v-list-item link :to="{ name: 'admin-tags' }">
+                <v-list-item-icon>
+                    <v-icon>filter_none</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Теги</v-list-item-title>
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
