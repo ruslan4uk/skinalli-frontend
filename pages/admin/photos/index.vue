@@ -33,7 +33,7 @@
                     </template>
                     <template v-slot:item.image="{ item }">
                         <v-img
-                            :src="item.image_preview_path"
+                            :src="item.image_preview_path + '#' + Math.random()"
                             :lazy-src="item.image_lazy"
                             aspect-ratio="1"
                             class="grey lighten-2"
