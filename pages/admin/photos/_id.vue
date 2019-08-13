@@ -20,16 +20,34 @@
                                 <v-layout wrap>
                                     <v-flex lg8>
                                         <h2>Основные</h2>
-                                        <v-text-field v-model="form.name" :counter="255" label="Заголовок" required></v-text-field>
-                                        <v-text-field v-model="form.slug" :counter="255" label="URL (Автоматическая генерация)" required></v-text-field>
+                                        <v-text-field 
+                                            v-model="form.name" 
+                                            :counter="255" 
+                                            label="Заголовок" 
+                                            required
+                                            :error-messages="errors.name"></v-text-field>
                                         
-                                        <v-select :items="category" 
+                                        <v-text-field 
+                                            v-model="form.slug" 
+                                            :counter="255" 
+                                            label="URL (Автоматическая генерация)" 
+                                            required></v-text-field>
+
+                                        <v-text-field 
+                                            v-model="form.name_photo" 
+                                            :counter="255" 
+                                            label="Внутренняя нумерация изображения" 
+                                            required></v-text-field>
+                                        
+                                        <v-select 
+                                            :items="category" 
                                             v-model="form.photo_category[0]"
                                             :menu-props="{ offsetY: true }"
                                             label="Категория" 
                                             item-text="name"
                                             item-value="id"
-                                            required></v-select>
+                                            required
+                                            :error-messages="errors.photo_category"></v-select>
                                         
                                         <v-combobox
                                             v-model="form.photo_tags"
@@ -39,7 +57,7 @@
                                             persistent-hint
                                             small-chips
                                             hide-selected
-                                            >
+                                            :error-messages="errors.photo_tags">
                                             <template v-slot:no-data>
                                                 <v-list-item>
                                                     <v-list-item-content>
@@ -66,7 +84,13 @@
                                             </template>
                                         </v-combobox>
                                             
-                                        <v-textarea v-model="form.about" class="pb-8" :counter="1000" label="Описание" required></v-textarea>
+                                        <v-textarea 
+                                            v-model="form.about" 
+                                            class="pb-8" 
+                                            :counter="1000" 
+                                            label="Описание" 
+                                            required
+                                            :error-messages="errors.about"></v-textarea>
 
                                         <v-divider></v-divider>
 
@@ -84,18 +108,35 @@
                                             :display-size="1000"
                                             required
                                             @change="onFileChange"
-                                        >
+                                            :error-messages="errors.photo_path">
                                         </v-file-input>
 
-                                        <v-img :src="form.image_preview_path" v-if="form.image_preview_path"></v-img>
+                                        <v-img 
+                                            :src="form.image_preview_path + '?' + img_rand" >
+                                            <template v-slot:placeholder>
+                                                <v-layout fill-height align-center justify-center ma-0 >
+                                                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                                </v-layout>
+                                            </template>    
+                                        </v-img>
 
                                     </v-flex>
                                     
                                     <v-flex >
                                         <h2>СЕО</h2>
-                                        <v-text-field v-model="form.keywords" :counter="255" label="Keywords" required></v-text-field>
+                                        <v-text-field 
+                                            v-model="form.keywords" 
+                                            :counter="255" 
+                                            label="Keywords" 
+                                            required
+                                            :error-messages="errors.keywords"></v-text-field>
 
-                                        <v-textarea v-model="form.description" :counter="255" label="Description" required></v-textarea>
+                                        <v-textarea 
+                                            v-model="form.description" 
+                                            :counter="255" 
+                                            label="Description" 
+                                            required
+                                            :error-messages="errors.description"></v-textarea>
 
                                         <v-switch v-model="form.active" color="primary" label="Опубликовано"></v-switch>
                                     </v-flex>
@@ -108,7 +149,6 @@
                         </v-form>
                     </v-card-text>
                 </v-card>
-                {{ form }}
             </v-flex>
         </v-layout>
 
@@ -116,21 +156,30 @@
             <v-btn color="blue" text  @click="snackbar = false">Закрыть</v-btn>
         </v-snackbar>
 
+        <v-overlay :value="overlay">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+
     </v-container>
 </template>
 
 <script>
 export default {
+    middleware: ['auth'],
+
     data() {
         return {
+            overlay: true, 
+
             snackbar: false,
             snackbarText: '',
 
             category: [],
             tags: [],
 
+            img_rand: Math.random(),
+
             image: [],
-            overlay: false,
 
             form: {
                 id: '',
@@ -154,19 +203,24 @@ export default {
     },
     methods: {
         onFileChange() {
-            this.imageURL = URL.createObjectURL(this.image);
-
-            // console.log(this.$router);
-            
+            this.overlay = true
             let skinali = this.$refs.skinali.files; 
             let formData = new FormData
             formData.append('file', this.image)
             formData.append('id', this.$route.params.id)
 
             this.$axios.post('/admin/photos', formData, {headers: {'Content-Type': 'multipart/form-data'}})
-                .then(response => {
-                    console.log('good');
-                    
+                .then(res => {
+                    this.snackbarText = "Фото загружено успешно"
+                    this.snackbar = true
+                    setTimeout(() => {
+                        this.form.image_path = res.data.data.image_path
+                        this.form.image_preview_path = res.data.data.image_preview_path
+                        this.img_rand = Math.random()
+                        this.overlay = false
+                    }, 300);
+                }).catch(err => {
+                    this.overlay = false
                 })
         },
 
@@ -186,6 +240,7 @@ export default {
             this.category = res.data.category
             this.tags = res.data.tags
             this.form = res.data.data
+            this.overlay = false
         });
     },
 }
