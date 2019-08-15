@@ -30,7 +30,7 @@
                     <h3 class="headline font-weight-bold mb-4">Популярные подборки</h3>
                     <v-row>
                         <v-col cols="12" md="7">
-                            <v-card 
+                            <v-card :to="{ name: 'catalog' }"
                                 hover dark class="pa-10 text-center d-flex align-center" 
                                 :img="require('../assets/images/main/jumbotron2.jpg')"
                                 height="25.5rem">

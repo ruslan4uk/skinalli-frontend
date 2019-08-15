@@ -83,6 +83,14 @@
                                                 </v-chip>
                                             </template>
                                         </v-combobox>
+
+                                        <p class="body-1 mt-2">Цвет</p>
+                                        <v-btn-toggle multiple v-model="form.color" class="mb-2 custom-color">
+                                            <v-btn :class="item + ' darken-1'" :value="item" 
+                                                v-for="item in ['white','red','pink','purple','deep-purple','indigo','blue','teal','green','lime','orange','brown']" :key="item">
+                                                <v-icon>done</v-icon>
+                                            </v-btn>
+                                        </v-btn-toggle>
                                             
                                         <v-textarea 
                                             v-model="form.about" 
@@ -152,6 +160,8 @@
             </v-flex>
         </v-layout>
 
+        {{ form.color }}
+
         <v-snackbar v-model="snackbar" :timeout="3000" right top>{{ snackbarText }}
             <v-btn color="blue" text  @click="snackbar = false">Закрыть</v-btn>
         </v-snackbar>
@@ -186,6 +196,7 @@ export default {
                 name: '',
                 slug: '',
                 name_photo: '',
+                color: '',
                 about: '',
                 image_path: '',
                 image_preview_path: '',
@@ -247,5 +258,13 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-
+.custom-color
+    & .v-btn 
+        opacity: 1
+    & i 
+        display: none
+    & .v-item--active
+        opacity: 0.8
+        & i 
+            display: block
 </style>
