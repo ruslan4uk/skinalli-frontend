@@ -37,7 +37,8 @@
                                             v-model="form.name_photo" 
                                             :counter="255" 
                                             label="Внутренняя нумерация изображения" 
-                                            required></v-text-field>
+                                            required
+                                            :error-messages="errors.name_photo"></v-text-field>
                                         
                                         <v-select 
                                             :items="category" 
@@ -119,7 +120,7 @@
                                             :error-messages="errors.photo_path">
                                         </v-file-input>
 
-                                        <v-img 
+                                        <v-img v-if="form.image_preview_path "
                                             :src="form.image_preview_path + '?' + img_rand" >
                                             <template v-slot:placeholder>
                                                 <v-layout fill-height align-center justify-center ma-0 >
@@ -159,8 +160,6 @@
                 </v-card>
             </v-flex>
         </v-layout>
-
-        {{ form.color }}
 
         <v-snackbar v-model="snackbar" :timeout="3000" right top>{{ snackbarText }}
             <v-btn color="blue" text  @click="snackbar = false">Закрыть</v-btn>
@@ -216,6 +215,9 @@ export default {
         onFileChange() {
             this.overlay = true
             let skinali = this.$refs.skinali.files; 
+
+            console.log(skinali);
+            
             let formData = new FormData
             formData.append('file', this.image)
             formData.append('id', this.$route.params.id)

@@ -1,15 +1,4 @@
-<template>
-    <div>
-        subcatalog
-    </div>
-</template>
-
 <script>
-export default {
-    
-}
+    import Catalog from '~/pages/catalog/index'
+    export default Catalog
 </script>
-
-<style scoped>
-
-</style>

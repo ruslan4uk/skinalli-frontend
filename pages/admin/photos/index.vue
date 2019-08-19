@@ -91,7 +91,7 @@ export default {
             const index = this.photos.indexOf(item)
             confirm('Are you sure you want to delete this item?') && this.photos.splice(index, 1)
             this.$axios.delete(this.$route.path + '/' + item.id).then(res => {
-                console.log(res);
+                
             })
         },
     },

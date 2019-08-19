@@ -1,24 +1,30 @@
 <template>
     <div>
-        <v-navigation-drawer width="350px" app clipped v-if="$route.name === 'catalog'">
+        <v-navigation-drawer width="350px" app clipped v-if="$route.name === 'catalog' || $route.name === 'catalog-subcatalog'">
             <div class="px-4">
                 <v-list>
                     <div class="subtitle-2 font-weight-bold mb-1 mt-2">Сортировка</div>
                     <v-row>
                         <v-col cols="6">
-                            <v-btn block class="caption font-weight-bold">Сначала новые</v-btn>
+                            <v-btn exact
+                                block class="caption font-weight-bold"
+                                :to="{ query: { sort: 'asc' } }">Сначала новые</v-btn>
                         </v-col>
                         <v-col cols="6">
-                            <v-btn block class="caption font-weight-bold">Сначала старые</v-btn>
+                            <v-btn exact
+                                block class="caption font-weight-bold"
+                                :to="{ query: { sort: 'desc' } }">Сначала старые</v-btn>
                         </v-col>
                     </v-row>
                 </v-list>
                 <v-divider></v-divider>
                 <v-list>
                     <div class="subtitle-2 font-weight-bold mb-1 mt-2">Цвет</div>
-                    <v-btn-toggle multiple class="mb-2 custom-color row justify-between">
+                    <v-btn-toggle v-model="filter.color" multiple class="mb-2 custom-color row justify-between">
                         <div class="col-auto">
                             <v-btn small :class="item + ' darken-1 mr-2 mb-2'" :value="item" 
+                                exact
+                                :to="{ query: { color: item } }"
                                 v-for="item in ['white','red','pink','purple','deep-purple','indigo','blue','teal','green','lime','orange','brown']" :key="item">
                                 <v-icon>done</v-icon>
                             </v-btn>
@@ -43,11 +49,15 @@
 
             <v-toolbar-items class="ml-12">
                 <v-btn text :to="{ name: 'catalog' }">Каталог изображений</v-btn>
-                <v-btn text>Услуги дизайнера</v-btn>
+                <v-btn text exact :to="{ name: 'catalog-subcatalog', params: { subcatalog: 'sub' } }">Услуги дизайнера</v-btn>
                 <v-btn text>Контакты</v-btn>
             </v-toolbar-items>
 
             <v-spacer></v-spacer>
+
+            <v-btn text right icon>
+                <v-icon>favorite_border</v-icon> 
+            </v-btn>
 
             <v-btn text :to="{ path: '/auth/login' }" v-if="!authenticated">Вход</v-btn>
 
@@ -78,8 +88,14 @@
 
 <script>
 export default {
-    
-     methods: {
+    data() {
+        return {
+            filter: {
+                color: []
+            }
+        }
+    },
+    methods: {
         logout() {
             this.$auth.logout()
         },
@@ -90,4 +106,14 @@ export default {
 <style scoped lang="sass">
 .v-toolbar__title
     cursor: pointer
+
+.custom-color
+    & .v-btn 
+        opacity: 1
+    & i 
+        display: none
+    & .v-item--active
+        opacity: 0.8
+        & i 
+            display: block
 </style>
