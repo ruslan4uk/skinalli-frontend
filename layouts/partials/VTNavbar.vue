@@ -25,7 +25,7 @@
                             <v-btn small :class="item + ' darken-1 mr-2 mb-2'" :value="item" 
                                 exact
                                 :to="{ query: { color: item } }"
-                                v-for="item in ['white','red','pink','purple','deep-purple','indigo','blue','teal','green','lime','orange','brown']" :key="item">
+                                v-for="item in ['white','black','red','pink','purple','deep-purple','indigo','blue','teal','green','lime','orange','brown']" :key="item">
                                 <v-icon>done</v-icon>
                             </v-btn>
                         </div>

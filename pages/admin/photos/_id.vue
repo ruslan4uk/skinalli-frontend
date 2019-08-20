@@ -88,7 +88,7 @@
                                         <p class="body-1 mt-2">Цвет</p>
                                         <v-btn-toggle multiple v-model="form.color" class="mb-2 custom-color">
                                             <v-btn :class="item + ' darken-1'" :value="item" 
-                                                v-for="item in ['white','red','pink','purple','deep-purple','indigo','blue','teal','green','lime','orange','brown']" :key="item">
+                                                v-for="item in ['white','black','red','pink','purple','deep-purple','indigo','blue','teal','green','lime','orange','brown']" :key="item">
                                                 <v-icon>done</v-icon>
                                             </v-btn>
                                         </v-btn-toggle>
