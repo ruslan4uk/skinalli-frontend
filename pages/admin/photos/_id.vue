@@ -121,7 +121,7 @@
                                         </v-file-input>
 
                                         <v-img v-if="form.image_preview_path "
-                                            :src="form.image_preview_path + '?' + img_rand" >
+                                            :src="form.image_preview_path + '?' + Date.parse(form.updated_at)" >
                                             <template v-slot:placeholder>
                                                 <v-layout fill-height align-center justify-center ma-0 >
                                                 <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
@@ -186,8 +186,6 @@ export default {
             category: [],
             tags: [],
 
-            img_rand: Math.random(),
-
             image: [],
 
             form: {
@@ -199,7 +197,7 @@ export default {
                 about: '',
                 image_path: '',
                 image_preview_path: '',
-                active: '',
+                active: true,
                 keywords: '',
                 description: '',
                 created_at: '',
@@ -216,7 +214,7 @@ export default {
             this.overlay = true
             let skinali = this.$refs.skinali.files; 
 
-            console.log(skinali);
+            this.form.name_photo = this.image.name.split('.')[0]
             
             let formData = new FormData
             formData.append('file', this.image)

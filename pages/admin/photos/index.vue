@@ -33,8 +33,8 @@
                     </template>
                     <template v-slot:item.image="{ item }">
                         <v-img
-                            :src="item.image_preview_path + '#' + Math.random()"
-                            :lazy-src="item.image_lazy"
+                            :src="item.image_preview_path + '?' + Date.parse(item.updated_at)"
+                            :lazy-src="item.image_lazy + '?' + Date.parse(item.updated_at)"
                             aspect-ratio="1"
                             class="grey lighten-2"
                             max-width="400"
@@ -58,6 +58,7 @@ export default {
         return {
             search: '',
             headers: [
+                { text: 'Номер', align: 'left', value: 'name_photo' },
                 { text: 'Изображение', align: 'left', value: 'image' },
                 { text: 'Название', align: 'left', value: 'name' },
                 { text: 'Дата', align: 'left', value: 'created_at' },
