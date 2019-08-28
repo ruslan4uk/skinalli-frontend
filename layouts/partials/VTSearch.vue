@@ -22,9 +22,9 @@
                         <v-list dense>
                             <v-container class="custom-card-category py-0">
                                 <v-row>
-                                    <v-col cols="12" md="6" class="pa-0" v-for="(item, i) in 10" :key="i">
-                                        <v-list-item :to="{ name: 'catalog' }" >
-                                            <v-list-item-title :to="{ name: 'catalog' }">Категория номер - {{ item }}</v-list-item-title>
+                                    <v-col cols="12" md="6" class="pa-0" v-if="initCategory" v-for="(item, i) in initCategory" :key="i">
+                                        <v-list-item :to="{ name: 'catalog-subcatalog', params: { subcatalog: item.slug} }" >
+                                            <v-list-item-title>{{ item.name }}</v-list-item-title>
                                         </v-list-item>
                                     </v-col>
                                 </v-row>
@@ -39,7 +39,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
+
+    computed: {
+        ...mapGetters({
+            initCategory: 'init/category',
+        })
+    },
+
     methods: {
         alert(text) {
             alert(text)

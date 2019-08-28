@@ -2,13 +2,13 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <h1 class="title font-weight-bold">Заголовок картинки</h1>
+                <h1 class="title font-weight-bold">{{ data.name }}</h1>
                 <v-breadcrumbs :items="items" class="pl-0 pt-1 pb-1"></v-breadcrumbs>
             </v-col>
 
             <v-col cols="12">
                 <v-card>
-                    <v-img :src="require('../../assets/images/main/jumbotron3.jpg')"></v-img>
+                    <v-img :src="data.image_path"></v-img>
                     <v-card-actions class="py-1">
                         <div class="pa-4 d-flex">
                             <div class="mr-4"><strong>Цена: </strong>800 руб</div>
@@ -34,8 +34,8 @@
             <v-col cols="12">
                 <h1 class="title font-weight-bold">Тэги</h1>
                  <v-chip-group column active-class="primary--text">
-                    <v-chip v-for="tag in 10" :key="tag" :to="{ name: 'catalog' }">
-                        Тег-{{ tag }}
+                    <v-chip v-for="(tag, i) in data.photo_tag" :key="i" :to="{ name: 'catalog' }">
+                        {{ tag.name }}
                     </v-chip>
                 </v-chip-group>
             </v-col>
@@ -49,6 +49,7 @@
                 </v-row>
             </v-col>
         </v-row>
+        {{ data }}
     </v-container>
 </template>
 
@@ -74,6 +75,16 @@ export default {
                 },
             ],
         }
+    },
+
+    asyncData({isDev, route, store, env, params, query, req, res, redirect, error}) {
+        store.dispatch('init/setLoader', true)   
+        return store.$axios.get('/images/' + params.slug).then(res => {
+            store.dispatch('init/setLoader', false)   
+            return {
+                data: res.data.data
+            }
+        })
     },
 }
 </script>

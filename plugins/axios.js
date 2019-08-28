@@ -1,5 +1,6 @@
     
 import { get } from 'lodash'
+import { Store } from 'vuex';
 export default function({ $axios, store, app, redirect }) {
 
     $axios.interceptors.response.use(response => {

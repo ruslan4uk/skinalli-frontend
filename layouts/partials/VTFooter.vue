@@ -1,5 +1,9 @@
 <template>
     <v-footer dark padless>
+        <v-overlay :value="loader">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+
         <v-card flat tile class="primary darken-2 white--text text-center" >
             <v-card-text>
                 <v-btn class="mx-4 white--text" icon >
@@ -28,8 +32,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-    
+    data() {
+        return {
+            overlay: true
+        }
+    },
+
+    computed: {
+        ...mapGetters({ loader: 'init/loader' })
+    },
 }
 </script>
 

@@ -7,13 +7,13 @@
                     <p class="body-2 grey--text pb-0 mb-0">Найдено более 1 000 изображений</p>
                     <v-breadcrumbs :items="items" class="pl-0 pt-2 pb-2"></v-breadcrumbs>
                 </v-col>
-                <v-col cols="12" md="6" lg="6" v-for="n in 20" :key="n" class="px-0 pa-md-1">
-                    <v-card :to="{ name: 'images-slug', params: { slug: '312' } }">
+                <v-col cols="12" md="6" lg="6" v-if="data.data" v-for="(item, i) in data.data" :key="i" class="px-0 pa-md-1">
+                    <v-card :to="{ name: 'images-slug', params: { slug: item.slug } }">
                         <v-img 
-                            src="https://skinali.s3.us-east-2.amazonaws.com/skinali/1/skinali-1_preview.jpg"
+                            :src="item.image_path"
                             aspect-ratio="3.5"></v-img>
                         <v-card-actions class="py-1">
-                            <div class="body-2">Title </div>
+                            <div class="body-2">{{ item.name }}</div>
 
                             <v-spacer></v-spacer>
                             
@@ -40,19 +40,26 @@
                     </v-card>
                 </v-col>
                 <v-col cols="12">
-                    <div class="text-left">
+                    <div class="c-pagination">
                         <v-pagination
-                            :length="6"
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            @input="getData()"
                         ></v-pagination>
                     </div>
                 </v-col>
             </v-row>
         </v-container>
+        <pre>{{ data }}</pre>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
+    watchQuery: ['color', 'page', 'sort'],
+
     data() {
         return {
             items: [
@@ -74,9 +81,60 @@ export default {
             ],
         }
     },
+
+    asyncData({isDev, route, store, env, params, query, req, res, redirect, error}) { 
+        store.dispatch('init/setLoader', true)      
+        return store.$axios.get('/catalog', {
+                params: {
+                    page: query.page,
+                    subcatalog: params.subcatalog,
+                    color: query.color,
+                    sort: query.sort,
+                }
+            }).then(res => {
+                store.dispatch('init/setLoader', false) 
+                return { 
+                    data: res.data.data,
+                    pagination: {
+                        total: res.data.data.last_page,
+                        current: res.data.data.current_page
+                    }
+                }
+            })        
+    },
+
+    methods: {
+        getData() {
+            this.$router.push({ name: this.$route.name, query: { 
+                color: this.$route.query.color,
+                sort: this.$route.query.sort,
+                page: this.pagination.current,
+            } })
+            // this.$store.dispatch('init/setLoader', true)
+            // this.$axios.get('/catalog', {
+            //     params: {
+            //         page: this.pagination.current,
+            //         subcatalog: this.$route.params.subcatalog,
+            //     }
+            // }).then(res => {
+            //     this.data = res.data.data
+            //     this.pagination = {
+            //         total: res.data.data.last_page,
+            //         current: res.data.data.current_page
+            //     }
+            //     this.$store.dispatch('init/setLoader', false)
+            // })
+        }
+    },
+
+    // created () {
+    //     console.log(this.$route.params);
+    // },
 }
 </script>
 
 <style lang="sass" scoped>
-
+.c-pagination
+    max-width: 30rem
+    margin: 0 auto
 </style>

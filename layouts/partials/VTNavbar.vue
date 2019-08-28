@@ -8,23 +8,27 @@
                         <v-col cols="6">
                             <v-btn exact
                                 block class="caption font-weight-bold"
-                                :to="{ query: { sort: 'asc' } }">Сначала новые</v-btn>
+                                :to="filters({sort: 'asc'})">Сначала новые</v-btn>
                         </v-col>
                         <v-col cols="6">
                             <v-btn exact
                                 block class="caption font-weight-bold"
-                                :to="{ query: { sort: 'desc' } }">Сначала старые</v-btn>
+                                :to="filters({sort: 'desc'})">Сначала старые</v-btn>
                         </v-col>
                     </v-row>
                 </v-list>
                 <v-divider></v-divider>
                 <v-list>
                     <div class="subtitle-2 font-weight-bold mb-1 mt-2">Цвет</div>
-                    <v-btn-toggle v-model="filter.color" multiple class="mb-2 custom-color row justify-between">
-                        <div class="col-auto">
-                            <v-btn small :class="item + ' darken-1 mr-2 mb-2'" :value="item" 
+                    <v-btn-toggle v-model="filter.color" multiple class="mb-2 custom-color">
+                        <div class="">
+                            <v-btn small :class="'white darken-1 mr-2 mb-2'" value=""
                                 exact
-                                :to="{ query: { color: item } }"
+                                :to="{ query: { sort: $route.query.sort } }">
+                                <v-icon>done</v-icon>
+                            </v-btn><v-btn small :class="item + ' darken-1 mr-2 mb-2'" :value="item" 
+                                exact
+                                :to="filters({color: item})"
                                 v-for="item in ['white','black','red','pink','purple','deep-purple','indigo','blue','teal','green','lime','orange','brown']" :key="item">
                                 <v-icon>done</v-icon>
                             </v-btn>
@@ -37,7 +41,10 @@
                     <v-select :items="['category-1', 'category-2']" label="Выберите категорию"></v-select>
                 </v-list>
                 <v-divider></v-divider>
-                <v-btn class="caption font-weight-bold mb-5 mt-5" block dark color="indigo">Сбросить фильтр</v-btn>
+                <v-btn 
+                    class="caption font-weight-bold mb-5 mt-5" 
+                    block dark color="indigo"
+                    :to="{ query: {} }">Сбросить фильтр</v-btn>
 
             </div>
         </v-navigation-drawer>
@@ -88,10 +95,13 @@
 
 <script>
 export default {
+    watchQuery: true,
+
     data() {
         return {
             filter: {
-                color: []
+                color: [],
+                sort: ''
             }
         }
     },
@@ -99,6 +109,18 @@ export default {
         logout() {
             this.$auth.logout()
         },
+
+        filters(obj) {
+            let current = {
+                color: this.$route.query.color,
+                sort: this.$route.query.sort
+            }
+
+            if (obj.color) current.color = obj.color
+            if (obj.sort) current.sort = obj.sort
+
+            return { query: current }
+        }
     },
 }
 </script>
