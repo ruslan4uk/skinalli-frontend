@@ -1,13 +1,13 @@
 <template>
     <div>
-        <v-container fluid class="px-lg-5 pa-0 pa-md-2">
-            <v-row class="ma-0">
+        <v-container fluid class="">
+            <v-row>
                 <v-col cols="12" class="mb-0 pb-0">
                     <h3 class="headline font-weight-bold">Каталог изображений</h3>
                     <p class="body-2 grey--text pb-0 mb-0">Найдено более 1 000 изображений</p>
                     <v-breadcrumbs :items="items" class="pl-0 pt-2 pb-2"></v-breadcrumbs>
                 </v-col>
-                <v-col cols="12" md="6" lg="6" v-if="data.data" v-for="(item, i) in data.data" :key="i" class="px-0 pa-md-1">
+                <v-col cols="12" md="6" lg="6" v-if="data.data" v-for="(item, i) in data.data" :key="i" class="">
                     <v-card :to="{ name: 'images-slug', params: { slug: item.slug } }">
                         <v-img 
                             :src="item.image_path"
@@ -50,7 +50,6 @@
                 </v-col>
             </v-row>
         </v-container>
-        <pre>{{ data }}</pre>
     </div>
 </template>
 

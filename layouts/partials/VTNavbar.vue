@@ -55,18 +55,30 @@
             <v-toolbar-title @click="$router.push('/')">SKINALI</v-toolbar-title>
 
             <v-toolbar-items class="ml-12">
-                <v-btn text :to="{ name: 'catalog' }">Каталог изображений</v-btn>
-                <v-btn text exact :to="{ name: 'catalog-subcatalog', params: { subcatalog: 'sub' } }">Услуги дизайнера</v-btn>
-                <v-btn text>Контакты</v-btn>
+                <v-btn text :to="{ name: 'catalog' }">
+                    <v-icon class="mr-sm-2">dashboard</v-icon>
+                    <span class="d-none d-sm-flex">Каталог изображений</span>
+                </v-btn>
+                <v-btn text exact :to="{ name: 'catalog-subcatalog', params: { subcatalog: 'sub' } }">
+                    <v-icon class="mr-sm-2">sentiment_satisfied_alt</v-icon>
+                    <span class="d-none d-sm-flex">Услуги дизайнера</span>
+                </v-btn>
+                <v-btn text>
+                    <v-icon class="mr-sm-2">contacts</v-icon>
+                    <span class="d-none d-sm-flex">Контакты</span>
+                </v-btn>
             </v-toolbar-items>
 
             <v-spacer></v-spacer>
 
             <v-btn text right icon>
                 <v-icon>favorite_border</v-icon> 
+                <span class="favorite-count">{{ favorite.count.length }}</span>
             </v-btn>
 
-            <v-btn text :to="{ path: '/auth/login' }" v-if="!authenticated">Вход</v-btn>
+            <v-btn text :to="{ path: '/auth/login' }" class="d-none d-sm-flex" v-if="!authenticated">
+                <v-icon left>assignment</v-icon>Вход
+            </v-btn>
 
             <v-menu offset-y v-if="authenticated">
                 <template v-slot:activator="{ on }">
@@ -89,7 +101,6 @@
                 </v-list>
             </v-menu>
         </v-app-bar>
-
     </div>
 </template>
 
@@ -102,6 +113,9 @@ export default {
             filter: {
                 color: [],
                 sort: ''
+            },
+            favorite: {
+                count: ''
             }
         }
     },
@@ -122,6 +136,12 @@ export default {
             return { query: current }
         }
     },
+
+    created () {
+        if(process.browser) {
+            this.favorite.count = JSON.parse(localStorage.getItem('app.favorite') || '[]');
+        }
+    },
 }
 </script>
 
@@ -138,4 +158,14 @@ export default {
         opacity: 0.8
         & i 
             display: block
+
+.favorite-count
+    position: absolute
+    bottom: -0.25rem
+    right: 0.5rem
+    color: blue
+    padding: 0.125rem
+    border-radius: 50% 50%
+    background-color: #fff
+    font-size: 0.625rem
 </style>

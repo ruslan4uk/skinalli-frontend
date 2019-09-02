@@ -72,12 +72,12 @@
         <v-container>
             <v-row>
                 <v-col cols="12"><h3 class="headline font-weight-bold mb-2">Категории</h3></v-col>
-                <v-col cols="12" sm="6" lg="4" v-for="item in [1,2,3,4,5,6]" :key="item">
+                <v-col cols="12" sm="6" lg="4" v-for="(item, index) in category" :key="index">
                     <v-card flat to="/" class="transparent custom-card">
                         <v-img src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" class="mb-2">
                             <div class="fill-height bottom-gradient"></div>
                         </v-img>
-                        <div class="subtitle-1 black--text font-weight-bold px-4">Название категории</div>
+                        <div class="subtitle-1 black--text font-weight-bold px-4">{{ item.name }}</div>
                         <p class="caption grey--text text--darken-2 px-4 pb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam, 
                             blanditiis nesciunt repellat saepe officiis aliquid culpa aperiam 
                             architecto ad et est atque ipsum totam autem debitis vitae consectetur? 
@@ -90,8 +90,14 @@
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex'
 
+export default {
+    computed: {
+        ...mapGetters({
+            category: 'init/category'
+        })
+    },
 }
 </script>
 

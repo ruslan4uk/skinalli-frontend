@@ -1,8 +1,7 @@
 <template>
-    <v-layout>
         <v-row>
-            <v-col cols="12 my-0 py-0">
-                <v-toolbar dense >
+            <v-col cols="12" class="py-0 my-0">
+                <v-toolbar dense class="py-2 py-sm-0">
                     <v-text-field
                         hide-details
                         prepend-icon="search"
@@ -35,7 +34,6 @@
                 </v-toolbar>
             </v-col>
         </v-row>
-    </v-layout>
 </template>
 
 <script>

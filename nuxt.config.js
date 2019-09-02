@@ -45,6 +45,10 @@ export default {
     '@/plugins/mixins/validation',
     '@/plugins/mixins/user',
     '@/plugins/axios',
+    { 
+      src: '~/plugins/localStorage.js', 
+      ssr: false 
+    },
   ],
 
   /*

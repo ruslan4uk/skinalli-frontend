@@ -19,7 +19,7 @@
 
                         <v-tooltip top>
                             <template v-slot:activator="{ on }">
-                                <v-btn icon small v-on="on">
+                                <v-btn icon small v-on="on" @click="toFavorite(data.id)">
                                     <v-icon>favorite</v-icon>
                                 </v-btn>
                             </template>
@@ -49,11 +49,13 @@
                 </v-row>
             </v-col>
         </v-row>
-        {{ data }}
+        {{ favorite }}
     </v-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     data() {
         return {
@@ -85,6 +87,26 @@ export default {
                 data: res.data.data
             }
         })
+    },
+
+    computed: {
+        ...mapGetters({
+            favorite: 'localStorage/favorite'
+        })
+    },
+
+    methods: {
+        toFavorite(id) {
+            let t = false
+            this.favorite.forEach(el => {
+                if(el.id === id) {
+                    t = true
+                } 
+            });
+            t 
+                ? this.$store.dispatch('localStorage/removeFavorite', {id: id}) 
+                : this.$store.dispatch('localStorage/setFavorite', {id: id})
+        },
     },
 }
 </script>
