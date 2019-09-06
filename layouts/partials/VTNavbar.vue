@@ -38,7 +38,14 @@
                 <v-divider></v-divider>
                 <v-list>
                     <div class="subtitle-2 font-weight-bold mb-1 mt-2">Категория</div>
-                    <v-select :items="['category-1', 'category-2']" label="Выберите категорию"></v-select>
+                    <v-select 
+                        :items="initCategory"
+                        v-model="filter.category"
+                        return-object=true
+                        item-text="name"
+                        item-value="id"
+                        label="Выберите категорию"></v-select>
+
                 </v-list>
                 <v-divider></v-divider>
                 <v-btn 
@@ -73,7 +80,7 @@
 
             <v-btn text right icon>
                 <v-icon>favorite_border</v-icon> 
-                <span class="favorite-count">{{ favorite.count.length }}</span>
+                <span class="favorite-count">{{ favorite.length }}</span>
             </v-btn>
 
             <v-btn text :to="{ path: '/auth/login' }" class="d-none d-sm-flex" v-if="!authenticated">
@@ -105,6 +112,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     watchQuery: true,
 
@@ -112,11 +120,9 @@ export default {
         return {
             filter: {
                 color: [],
-                sort: ''
+                sort: '',
+                category: [],
             },
-            favorite: {
-                count: ''
-            }
         }
     },
     methods: {
@@ -136,12 +142,10 @@ export default {
             return { query: current }
         }
     },
-
-    created () {
-        if(process.browser) {
-            this.favorite.count = JSON.parse(localStorage.getItem('app.favorite') || '[]');
-        }
-    },
+    
+    async mounted() {
+        this.filter.category = this.initCategory.filter(x => x.slug === this.$route.params.subcatalog)[0] || []
+    }
 }
 </script>
 

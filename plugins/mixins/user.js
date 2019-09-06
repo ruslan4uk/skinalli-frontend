@@ -9,6 +9,8 @@ const User = {
                 ...mapGetters({
                     user: 'auth/user',
                     authenticated: 'auth/authenticated',
+                    favorite: 'localStorage/favorite',
+                    initCategory: 'init/category',
                 }),
             }
         })

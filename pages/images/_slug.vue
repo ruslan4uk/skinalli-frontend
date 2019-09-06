@@ -9,47 +9,70 @@
             <v-col cols="12">
                 <v-card>
                     <v-img :src="data.image_path"></v-img>
-                    <v-card-actions class="py-1">
-                        <div class="pa-4 d-flex">
-                            <div class="mr-4"><strong>Цена: </strong>800 руб</div>
-                            <div class="mr-4"><strong>Разрешение: </strong>1200 х 1200 см</div>
-                            <div class="mr-4"><strong>Размер: </strong>13 мб</div>
-                        </div>
-                        <v-spacer></v-spacer>
-
-                        <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                                <v-btn icon small v-on="on" @click="toFavorite(data.id)">
-                                    <v-icon>favorite</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>В избранное</span>
-                        </v-tooltip>
-
-                        <v-btn class="primary px-6 mx-4">Купить</v-btn>
-                    </v-card-actions>
                 </v-card>
             </v-col>
 
             <v-col cols="12">
-                <h1 class="title font-weight-bold">Тэги</h1>
-                 <v-chip-group column active-class="primary--text">
-                    <v-chip v-for="(tag, i) in data.photo_tag" :key="i" :to="{ name: 'catalog' }">
-                        {{ tag.name }}
-                    </v-chip>
-                </v-chip-group>
+                <v-row>
+                    <v-col cols="12" md="3">
+                        <h2 class="title font-weight-bold">Тэги</h2>
+                        <v-chip-group column active-class="primary--text">
+                            <v-chip v-for="(tag, i) in data.photo_tag" :key="i" :to="{ name: 'catalog' }">
+                                {{ tag.name }}
+                            </v-chip>
+                        </v-chip-group>
+                    </v-col>
+                    <v-col cols="12" md="9">
+                        <v-card class="px-6 py-3 body-2">
+                            <h2 class="title font-weight-bold mb-4">Как купить</h2>
+                            <p>
+                                На указанный e-mail будет отправлено подтверждение о приеме заказа и способах оплаты. 
+                                Если подтверждение не пришло, проверьте правильность указания почтового ящика и папку СПАМ. 
+                                Срок исполнения заказа - 5 мин. с момента оплаты.
+                            </p>
+
+                            <p>
+                                В этом изображении мы можем заменить цвет, дорисовать до нужного размера, 
+                                сделать эскиз под Ваш размер. Напишите нам свои пожелания и мы реализуем 
+                                их для Вас. Посмотреть прайс на услуги.
+                            </p>
+                            <v-form>
+                                <v-text-field
+                                    class="compact-form"
+                                    v-model="form.name"
+                                    label="Ваше имя"
+                                    required
+                                    outlined
+                                    clearable
+                                    prepend-inner-icon="account_circle"
+                                ></v-text-field>
+
+                                <v-text-field
+                                    class="compact-form"
+                                    v-model="form.email"
+                                    label="Ваш Email"
+                                    required
+                                    outlined
+                                    clearable
+                                    prepend-inner-icon="mail"
+                                ></v-text-field>
+
+                                <v-btn color="primary" class="mb-4">Купить</v-btn>
+                            </v-form>
+                        </v-card>
+                    </v-col>
+                </v-row>
             </v-col>
 
             <v-col cols="12">
                 <h1 class="title font-weight-bold mb-2">Категории</h1>
                 <v-row>
-                    <v-col cols="6" md="3" v-for="n in 20" :key="n" class="py-1">
-                        Категория - {{ n }}
+                    <v-col cols="6" md="3" v-for="(item, index) in initCategory" :key="index" class="py-1">
+                        <nuxt-link :to="{ name: 'catalog-subcatalog', params: { subcatalog: item.slug }}">{{ item.name }}</nuxt-link>
                     </v-col>
                 </v-row>
             </v-col>
         </v-row>
-        {{ favorite }}
     </v-container>
 </template>
 
@@ -59,6 +82,10 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
+            form: {
+                email: '',
+                name: '',
+            },
             items: [
                 {
                     text: 'Dashboard',
@@ -97,20 +124,15 @@ export default {
 
     methods: {
         toFavorite(id) {
-            let t = false
-            this.favorite.forEach(el => {
-                if(el.id === id) {
-                    t = true
-                } 
-            });
-            t 
-                ? this.$store.dispatch('localStorage/removeFavorite', {id: id}) 
-                : this.$store.dispatch('localStorage/setFavorite', {id: id})
+            this.$store.dispatch('localStorage/setFavorite', {id: id})
         },
     },
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="sass" scoped>
+.compact-form 
+    transform: scale(0.825)
+    transform-origin: left
+    width: 121%
 </style>

@@ -24,8 +24,16 @@ export default {
     },
 
     actions: {
-        setFavorite({ commit }, payload) {
-            commit('SET_FAVORITE', payload);
+        setFavorite({ commit, state }, payload) {
+            let isFavorite = false
+            state.favorite.forEach(el => {
+                if(el.id === payload.id) {
+                    isFavorite = true
+                } 
+            });
+            isFavorite 
+                ? commit('REMOVE_FAVORITE', payload)
+                : commit('SET_FAVORITE', payload);
         },
         removeFavorite({ commit }, payload) {
             commit('REMOVE_FAVORITE', payload)

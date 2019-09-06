@@ -19,8 +19,9 @@
                             
                             <v-tooltip top>
                                 <template v-slot:activator="{ on }">
-                                    <v-btn icon small v-on="on">
-                                        <v-icon>favorite</v-icon>
+                                    <v-btn icon small v-on="on" @click.prevent="toFavorite(item.id)">
+                                        <v-icon
+                                            :color="favorite.find(x => x.id === item.id) ? 'red' : ''">favorite</v-icon>
                                     </v-btn>
                                 </template>
                                 <span>В избранное</span>
@@ -109,26 +110,12 @@ export default {
                 sort: this.$route.query.sort,
                 page: this.pagination.current,
             } })
-            // this.$store.dispatch('init/setLoader', true)
-            // this.$axios.get('/catalog', {
-            //     params: {
-            //         page: this.pagination.current,
-            //         subcatalog: this.$route.params.subcatalog,
-            //     }
-            // }).then(res => {
-            //     this.data = res.data.data
-            //     this.pagination = {
-            //         total: res.data.data.last_page,
-            //         current: res.data.data.current_page
-            //     }
-            //     this.$store.dispatch('init/setLoader', false)
-            // })
-        }
-    },
+        },
+        toFavorite(id) {
+            this.$store.dispatch('localStorage/setFavorite', {id: id})
+        },
 
-    // created () {
-    //     console.log(this.$route.params);
-    // },
+    },
 }
 </script>
 
