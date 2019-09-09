@@ -58,7 +58,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-    watchQuery: ['color', 'page', 'sort'],
+    watchQuery: ['color', 'page', 'sort', 'month', 'year'],
 
     data() {
         return {
@@ -90,6 +90,9 @@ export default {
                     subcatalog: params.subcatalog,
                     color: query.color,
                     sort: query.sort,
+                    year: query.year,
+                    month: query.month,
+
                 }
             }).then(res => {
                 store.dispatch('init/setLoader', false) 
@@ -109,6 +112,8 @@ export default {
                 color: this.$route.query.color,
                 sort: this.$route.query.sort,
                 page: this.pagination.current,
+                year: this.$route.query.year,
+                month: this.$route.query.month,
             } })
         },
         toFavorite(id) {
