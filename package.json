@@ -18,7 +18,7 @@
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^2.6.0",
-    "browserslist": "^4.6.6",
+    "browserslist": "^4.16.5",
     "cross-env": "^5.2.0",
     "cyrillic-to-translit-js": "^2.2.0",
     "node-sass": "^4.12.0",
